@@ -15,7 +15,6 @@ let  list_to_set liste =
     in list_to_set_rec liste []
 ;;
 
-
 let rec recuperer_non_terminaux_regle production =
     let rec recuperer_non_terminaux_regle_rec production res =
         match production with
@@ -26,3 +25,18 @@ let rec recuperer_non_terminaux_regle production =
                                 | NT(x)::tail -> recuperer_non_terminaux_regle_rec (Prod(nt, tail)) (NT(x)::res)
 
     in (list_to_set (recuperer_non_terminaux_regle_rec production []))
+;;
+
+let rec recuperer_non_terminaux_grammaire grammaire =
+    match grammaire with
+    | [] -> []
+    | head::tail -> list_to_set
+                    ((recuperer_non_terminaux_regle head)
+                    @
+                    (recuperer_non_terminaux_grammaire tail))
+;;
+
+
+let rec non_terminaux_accessibles lettre grammaire parcours =
+    match grammaire with
+    |

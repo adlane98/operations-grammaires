@@ -43,9 +43,17 @@ let retirer_terme terme alphabet =
         | head::tail -> if head = terme
                         then retirer_terme_rec terme tail res
                         else retirer_terme_rec terme tail (head::res)
-    in retirer_terme_rec terme alphabet []
+    in List.rev (retirer_terme_rec terme alphabet [])
 ;;
 
+
+let rec nombre_occurences terme alphabet =
+    match alphabet with
+    | [] -> 0
+    | head::tail -> if head = terme
+                    then 1 + (nombre_occurences terme tail)
+                    else nombre_occurences terme tail
+;;
 (*
 let rec non_terminaux_accessibles lettre grammaire parcours =
     match grammaire with

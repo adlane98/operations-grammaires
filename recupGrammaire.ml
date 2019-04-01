@@ -36,7 +36,19 @@ let rec recuperer_non_terminaux_grammaire grammaire =
                     (recuperer_non_terminaux_grammaire tail))
 ;;
 
+let retirer_terme terme alphabet =
+    let rec retirer_terme_rec terme alphabet res =
+        match alphabet with
+        | [] -> res
+        | head::tail -> if head = terme
+                        then retirer_terme_rec terme tail res
+                        else retirer_terme_rec terme tail (head::res)
+    in retirer_terme_rec terme alphabet []
+;;
 
+(*
 let rec non_terminaux_accessibles lettre grammaire parcours =
     match grammaire with
-    |
+    | Prod(nt, production)::tail -> if lettre = nt
+                                    then
+*)

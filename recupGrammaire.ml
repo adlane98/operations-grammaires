@@ -1,0 +1,28 @@
+let rec contient x l =
+    match l with
+    | [] -> false
+    | head::tail -> if head = x then true else contient x tail
+
+
+let  list_to_set liste =
+    let rec list_to_set_rec liste ensemble =
+        match liste with
+        | [] -> ensemble
+        | head::tail ->   if List.mem head ensemble then
+                        list_to_set_rec tail ensemble
+                    else
+                        list_to_set_rec tail (head::ensemble)
+    in list_to_set_rec liste []
+;;
+
+
+let rec recuperer_non_terminaux_regle production =
+    let rec recuperer_non_terminaux_regle_rec production res =
+        match production with
+        | Prod(nt, liste) ->    match liste with
+                                | [] -> nt::res
+                                | Epsilon::[] -> nt::res
+                                | T(_)::tail -> recuperer_non_terminaux_regle_rec (Prod(nt, tail)) res
+                                | NT(x)::tail -> recuperer_non_terminaux_regle_rec (Prod(nt, tail)) (NT(x)::res)
+
+    in (list_to_set (recuperer_non_terminaux_regle_rec production []))

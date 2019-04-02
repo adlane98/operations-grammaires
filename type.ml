@@ -35,6 +35,7 @@ Prod(NT('T'),   [T('c'); NT('B'); NT('U')]);
 Prod(NT('T'),   [Epsilon]);
 Prod(NT('B'),   [T('d'); NT('B'); NT('S')]);
 Prod(NT('B'),   [T('d'); NT('T'); NT('U')]);
+Prod(NT('U'),   [NT('U')]);
 Prod(NT('B'),   [Epsilon]);
 Prod(NT('U'),   [Epsilon])
 ];;

@@ -44,17 +44,31 @@ let rec recuperer_regles nonterminal grammaire =
                            else recuperer_regles nonterminal tail
     ;;
 
-(*
-let rec non_terminaux_accessibles lettre grammaire parcours =
-    match grammaire with
-    | Prod(nt, production)::tail -> if lettre = nt
-                                    then *)
+
+let rec recuperer_non_terminaux_productibles non_terminal grammaire acc =
+    if List.mem non_terminal acc
+    then acc
+    else let regles = recuperer_regles nonterminal grammaire in
+             match regles with
+             | [] -> acc
+             | head::tail -> let nt = recuperer_non_terminaux_regle head in
+                                 match nt with
+                                 | [] ->
 
 
-let rec non_terminaux_productibles nonterminal grammaire parcourus =
-    let regles = recuperer_regles nonterminal grammaire in
-        match regles with
-        | [] -> []
-        | head::tail -> let nonterminaux = recuperer_non_terminaux_regle head in
-                            match nonterminaux with
-                            | [] -> 
+
+
+
+(*  Pour un non-terminal donne, recuperer toutes ses productions (regles dont il est member gauche)
+        si il n'a pas de production, il n'est pas productible
+        si il a des production :
+            pour chaque production, verifier si elle est productible et l'ajouter a la liste des parcourus
+            si une production n'est pas productible, ajouter la liste des productions parcourues et passer a la production suivante
+            si une production est productible, ajouter ses non-terminaux et la liste des productions parcourues *)
+
+
+(*  Pour chaque production, recuperer ses non-terminaux
+        si il n'y en a pas, le membre de gauche de la production est productible
+        sinon, pour chaque non-terminal, verifier si il n'a pas deja ete marque comme accessible
+            si oui, passer au terminal suivant
+            sinon, recuperer ses productions non encore parcourues *)

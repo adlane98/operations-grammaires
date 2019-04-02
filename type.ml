@@ -1,23 +1,15 @@
 type lettre = T of char | NT of char | Epsilon ;;
 type regle = Prod of (lettre * (lettre list)) ;;
-type grammaire = (regle list);;
+type grammaire = regle list;;
 
 (* Verifie si a partir de la regle 'r' le symbole 's' est accessible *)
-let rec estAccessibleDirect r s =
-    match r with
+let rec est_accessible_direct regle symbole =
+    match regle with
     | Prod(_, []) -> false
-    | Prod(t, l::tail) ->   if s == l then
-                                true
-                            else estAccessibleDirect (Prod(t, tail)) s
+    | Prod(nt, head::tail) -> if (symbole == head)
+                              then true
+                              else est_accessible_direct (Prod(nt, tail)) symbole
     ;;
-
-(* let rec accessibles regles l =
-    match regles with
-    | [] -> []
-    | r::tail -> *)
-
-
-
 
 let grammaireTest = [
 Prod(NT('A'),   [NT('B'); T('c')]);

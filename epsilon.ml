@@ -81,5 +81,5 @@ let supprimer_epsilon_regle gram =
         match ntpe with
         | [] -> gram
         | head::tail -> supprimer_epsilon_regle_rec tail (epsilon_iteration head gram)
-    in retirer_production_vide (supprimer_epsilon_regle_rec (non_terminaux_produisent_epsilon gram) gram)
+    in list_to_set (retirer_production_vide (supprimer_epsilon_regle_rec (non_terminaux_produisent_epsilon gram) gram))
 ;;

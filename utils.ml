@@ -1,11 +1,16 @@
 #use "type.ml"
 
+(*
+ * Verifie si l'element 'x' est contenu dans la liste 'l'
+ *)
 let rec contient x l =
     match l with
     | [] -> false
     | head::tail -> if head = x then true else contient x tail
 
-
+(*
+ * Renvoie la liste 'liste' sans doublons
+ *)
 let  list_to_set liste =
     let rec list_to_set_rec liste ensemble =
         match liste with
@@ -17,6 +22,11 @@ let  list_to_set liste =
     in list_to_set_rec liste []
 ;;
 
+(*
+ * Renvoie les non terminaux que produit la regle 'production'
+ * @param regle dont on souhaite determiner les non terminaux qu'elle produit
+ * @return une liste de non terminaux
+ *)
 let rec recuperer_non_terminaux_regle production =
     let rec recuperer_non_terminaux_regle_rec production res =
         match production with
@@ -29,6 +39,11 @@ let rec recuperer_non_terminaux_regle production =
     in (list_to_set (recuperer_non_terminaux_regle_rec production []))
 ;;
 
+(*
+ * Renvoie les non terminaux d'une grammaire
+ * @param grammaire une liste de regles
+ * @return une liste de non terminaux
+ *)
 let rec recuperer_non_terminaux_grammaire grammaire =
     match grammaire with
     | [] -> []
@@ -38,6 +53,11 @@ let rec recuperer_non_terminaux_grammaire grammaire =
                     (recuperer_non_terminaux_grammaire tail))
 ;;
 
+(*
+ * Retire un symbole d'une liste de symboles donnee en parametre
+ * @param alphabet une liste de symboles non terminaux et/ou terminaux
+ * @return une liste de symboles non terminaux et/ou terminaux
+ *)
 let retirer_terme terme alphabet =
     let rec retirer_terme_rec terme alphabet res =
         match alphabet with

@@ -68,7 +68,9 @@ let retirer_terme terme alphabet =
     in List.rev (retirer_terme_rec terme alphabet [])
 ;;
 
-
+(*
+ * Compte le nombre d'occurences d'un symbole 'terme' dans 'alphabet'
+ *)
 let rec nombre_occurences terme alphabet =
     match alphabet with
     | [] -> 0
@@ -77,6 +79,10 @@ let rec nombre_occurences terme alphabet =
                     else nombre_occurences terme tail
 ;;
 
+(*
+ * Renvoie une liste contenant la position de chaque occurence de 'n' d
+ * dans 'liste'.
+ *)
 let positions_valeurs n liste =
     let rec positions_valeurs_rec n liste i =
         match liste with
@@ -87,6 +93,9 @@ let positions_valeurs n liste =
     in positions_valeurs_rec n liste 0
 ;;
 
+(*
+ * Retire l'element d'indice 'n' de la liste 'liste'.
+ *)
 let rec retirer_indice n liste =
     match liste with
     | [] -> []
@@ -95,6 +104,9 @@ let rec retirer_indice n liste =
                     else head::(retirer_indice (n - 1) tail)
 ;;
 
+(*
+ * Retire les elements d'indice contenu dans la liste 'n' de la liste 'liste'.
+ *)
 let rec retirer_indices ns liste =
     match ns with
     | [] -> liste
@@ -102,7 +114,9 @@ let rec retirer_indices ns liste =
                     retirer_indices (List.map moinsun tail) (retirer_indice head liste)
 ;;
 
-
+(*
+ * Genere toutes les combinaisons de 'n' elements de la liste 'liste'.
+ *)
 let rec combinaisons n liste =
     match n with
     | 0 -> [[]]
@@ -114,6 +128,9 @@ let rec combinaisons n liste =
                                 (combinaisons n tail)
 ;;
 
+(*
+ * Genere toutes les combinaisons possibles de la liste 'liste'.
+ *)
 let toutes_combinaisons liste =
     let rec toutes_combinaisons_rec n liste =
         match n with
@@ -123,9 +140,3 @@ let toutes_combinaisons liste =
 ;;
 
 let test = combinaisons 4 [1;2;3;4;5];;
-(*
-let rec non_terminaux_accessibles lettre grammaire parcours =
-    match grammaire with
-    | Prod(nt, production)::tail -> if lettre = nt
-                                    then
-*)

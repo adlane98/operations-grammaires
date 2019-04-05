@@ -1,5 +1,4 @@
-#use "type.ml"
-#use "recupGrammaire.ml"
+#use "utils.ml"
 
 
 (*

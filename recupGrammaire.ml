@@ -49,6 +49,17 @@ let retirer_terme terme alphabet =
     ;;
 
 
+let rec non_terminaux_produits production =
+    match production with
+    | Prod(nt, h::t) -> begin
+        match h with
+        | NT(x) -> (NT(x))::(non_terminaux_produits (Prod(nt, t)))
+        | _ -> non_terminaux_produits (Prod(nt, t))
+        end
+    | _ -> []
+    ;;
+
+
 let rec regles_restantes nonterminaux grammaire =
     match grammaire with
     | [] -> []
@@ -70,13 +81,14 @@ let rec subset sub set =
 let non_terminaux_productibles grammaire =
     let rec non_terminaux_productibles_rec grammaire regles prec acc =
         match regles with
-        | [] -> let reste = (regles_restantes acc grammaire) in
+        | [] -> let reste = (regles_restantes acc grammaire) in begin
                 match reste with
                 | [] -> acc
                 | _ -> if (reste = prec)
                        then acc
                        else non_terminaux_productibles_rec grammaire reste regles acc
-        | Prod(nt, liste)::suite -> let non_terminaux = recuperer_non_terminaux_regle (Prod(nt, liste)) in
+                end
+        | Prod(nt, liste)::suite -> let non_terminaux = non_terminaux_produits (Prod(nt, liste)) in
                 if (subset non_terminaux acc)
                 then non_terminaux_productibles_rec grammaire suite [] (nt::acc)
                 else non_terminaux_productibles_rec grammaire suite [] acc

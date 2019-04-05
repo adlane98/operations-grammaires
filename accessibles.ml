@@ -10,7 +10,7 @@ let rec non_terminaux_accessibles_direct terme grammaire =
                                                 (recuperer_non_terminaux_regle (Prod(nt, l))) @
                                                 (non_terminaux_accessibles_direct terme tail)
                                             )
-                    else non_terminaux_accessibles_direct terme tail
+                           else non_terminaux_accessibles_direct terme tail
     ;;
 
 let rec non_terminaux_accessibles grammaire parcours alphabet =

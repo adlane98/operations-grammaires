@@ -1,4 +1,4 @@
-#use "recupGrammaire.ml"
+#use "utils.ml"
 
 (*
  * Renvoie true si la grammaire 'gram' contient uniquement des

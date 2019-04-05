@@ -2,6 +2,12 @@
 #use "recupGrammaire.ml"
 
 
+(*
+ * Recupere tous les non terminaux
+ * qui sont produits par le symbole 'terme' apres une seule dérivation
+ * dans la liste de regles 'gram' (une grammaire).
+ *)
+
 let rec non_terminaux_accessibles_direct terme gram =
     match gram with
     | [] -> []
@@ -15,6 +21,11 @@ let rec non_terminaux_accessibles_direct terme gram =
                                 else
                                     (non_terminaux_accessibles_direct terme tail)
 ;;
+(*
+ * Recupere les non-terminaux accessibles a 
+ * partir d'un non terminal 'depart' dans une
+ * grammaire, une liste de regles, 'gram'.
+ *)
 
 let non_terminaux_accessibles gram depart =
     let rec non_terminaux_accessibles_rec gram parcours alphabet =

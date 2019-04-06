@@ -1,16 +1,13 @@
 #use "type.ml";;
-
-let rec non_terminaux_produits production =
-    match production with
-    | Prod(nt, h::t) -> begin
-        match h with
-        | NT(x) -> (NT(x))::(non_terminaux_produits (Prod(nt, t)))
-        | _ -> non_terminaux_produits (Prod(nt, t))
-        end
-    | _ -> []
-    ;;
+#use "utils.ml";;
 
 
+(*
+ * Renvoie toutes les regles d'une grammaire dont le membre gauche ne fait pas
+ * partie d'une liste de non-terminaux donnés
+ * @param une grammaire et une liste de non-terminaux
+ * @return une liste de productions
+ *)
 let rec regles_restantes nonterminaux grammaire =
     match grammaire with
     | [] -> []
@@ -20,15 +17,11 @@ let rec regles_restantes nonterminaux grammaire =
     ;;
 
 
-let rec subset sub set =
-    match sub with
-    | [] -> true
-    | h::t -> if (List.mem h set)
-              then subset t set
-              else false
-    ;;
-
-
+(*
+ * Recupere tous les non-terminaux productifs d'une grammaire
+ * @param une grammaire
+ * @return une liste de non-terminaux
+ *)
 let non_terminaux_productifs grammaire =
     let rec non_terminaux_productifs_rec grammaire regles prec acc =
         match regles with

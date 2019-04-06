@@ -1,10 +1,10 @@
-#use "utils.ml"
+#use "type.ml";;
+#use "utils.ml";;
 
 (*
  * Renvoie true si la grammaire 'gram' contient uniquement des
  * regles de la forme A -> epsilon et/ou A -> A..A (uniquement des A à droite)
  *)
-
 let rec epsilon_seul nt gram =
     match gram with
     | [] -> true
@@ -14,14 +14,14 @@ let rec epsilon_seul nt gram =
     | _::tail -> epsilon_seul nt tail
 ;;
 
+
 (*
- * Renvoie une liste des symboles non terminaux qui produisent 
+ * Renvoie une liste des symboles non terminaux qui produisent
  * epsilon dans la grammaire 'gram'.
- * La liste renvoyee contient des elements de la forme '(nt, cas)' 
+ * La liste renvoyee contient des elements de la forme '(nt, cas)'
  * avec 'nt' le symbole non terminal et cas la valeur renvoye par 'epsilon_seul'
  * avec comme parametre 'nt'.
  *)
-
 let non_terminaux_produisent_epsilon gram =
     let rec non_terminaux_produisent_epsilon_rec gram gramCheck =
         match gram with
@@ -31,33 +31,8 @@ let non_terminaux_produisent_epsilon gram =
     in non_terminaux_produisent_epsilon_rec gram gram
 ;;
 
+
 (*
- * Cas 2.
- * Rajoute les regles necessaires lorsque l'on a supprime une epsilon-regle.
- * Par exemple pour la regle S -> aSTbScS, avec la 
- * suppression de S -> epsilon, nous ajouterons les regles,  : 
- * S -> aTBScS
- * S -> aSTBcS
- * S -> aSTBSc
- * S -> aTBcS
- * S -> aTBSc
- * S -> aSTBc
- * S -> aTBc
- *)
-
-(* Test
-dupliquer (NT('S')) (Prod(NT('S'), [T('a');NT('S');NT('T');T('b');NT('S');T('c');NT('S')]));;
-*)
-let dupliquer terme regle =
-    match regle with
-    | Prod(nt, droite) ->   let rec dupliquer_rec positions regle =
-                                match positions with
-                                | [] -> [Prod(nt, droite)]
-                                | head::tail -> Prod(nt, (retirer_indices head droite))::(dupliquer_rec tail regle)
-                            in dupliquer_rec (toutes_combinaisons (positions_valeurs terme droite)) regle
-;;
-
-(* 
  * Cas 1.
  * Retire un symbole 'terme' de toute la grammaire 'gram'.
  *)
@@ -68,15 +43,41 @@ let rec retirer_lettre_grammaire terme gram =
     | head::tail -> head::(retirer_lettre_grammaire terme tail)
 ;;
 
-(* 
+
+(*
+ * Cas 2.
+ * Rajoute les regles necessaires lorsque l'on a supprime une epsilon-regle.
+ * Par exemple pour la regle S -> aSTbScS, avec la
+ * suppression de S -> epsilon, nous ajouterons les regles,  :
+ * S -> aTBScS
+ * S -> aSTBcS
+ * S -> aSTBSc
+ * S -> aTBcS
+ * S -> aTBSc
+ * S -> aSTBc
+ * S -> aTBc
+ *)
+let dupliquer terme regle =
+    match regle with
+    | Prod(nt, droite) ->   let rec dupliquer_rec positions regle =
+                                match positions with
+                                | [] -> [Prod(nt, droite)]
+                                | head::tail -> Prod(nt, (retirer_indices head droite))::(dupliquer_rec tail regle)
+                            in dupliquer_rec (toutes_combinaisons (positions_valeurs terme droite)) regle
+;;
+
+
+(*
  * Retire un symbole 'terme' d'une regle 'production'.
  *)
 let rec retirer_lettre_production terme production =
     match production with
     | Prod(nt, droite) -> Prod(nt, retirer_terme terme droite)
+    ;;
 
-(* 
- * Retire d'une grammaire 'gram' les regles qui ne produisent rien, 
+
+(*
+ * Retire d'une grammaire 'gram' les regles qui ne produisent rien,
  * c'est-a-dire de la forme 'Prod(nt, [])'.
  *)
 let rec retirer_production_vide gram =
@@ -84,11 +85,12 @@ let rec retirer_production_vide gram =
     | [] -> []
     | Prod(nt, [])::tail -> retirer_production_vide tail
     | head::tail -> head::(retirer_production_vide tail)
-;;
+    ;;
+
 
 (*
- * Retire l'epsilon-regle associe terme 'terme' 
- * (qui se trouve a gauche dans l'epsilon-regle) de la grammaire 'gram', 
+ * Retire l'epsilon-regle associe terme 'terme'
+ * (qui se trouve a gauche dans l'epsilon-regle) de la grammaire 'gram',
  * en indiquant le cas 1 (true) ou 2 (false) avec 'eps_seul'.
  * Si on est dans le cas 2, on ajoute les regles necessaires avec 'dupliquer'.
  *)
@@ -104,7 +106,8 @@ let rec epsilon_iteration (terme, eps_seul) gram =
         @
         (epsilon_iteration (terme, eps_seul) tail)
     | head::tail -> head::(epsilon_iteration (terme, eps_seul) tail)
-;;
+    ;;
+
 
 (*
  * Retire toutes les epsilon-regles de la grammaire 'gram'
@@ -115,4 +118,4 @@ let supprimer_epsilon_regle gram =
         | [] -> gram
         | head::tail -> supprimer_epsilon_regle_rec tail (epsilon_iteration head gram)
     in list_to_set (retirer_production_vide (supprimer_epsilon_regle_rec (non_terminaux_produisent_epsilon gram) gram))
-;;
+    ;;

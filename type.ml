@@ -1,3 +1,4 @@
+type nonTerminal = NT of char;;
 type lettre = T of char | NT of char | Epsilon ;;
 type regle = Prod of (lettre * (lettre list)) ;;
 type grammaire = regle list;;
@@ -12,9 +13,9 @@ let rec est_accessible_direct regle symbole =
     ;;
 
 let grammaireTest = [
-Prod(NT('A'),   [NT('B'); T('c')]);
-Prod(NT('B'),   [T('c'); T('c'); NT('D')]);
-Prod(NT('B'),   [T('d')]);
-Prod(NT('D'),   [NT('E')]);
-Prod(NT('F'),   [T('g'); T('a')])
+    Prod(NT('A'),   [NT('B'); T('c')]);
+    Prod(NT('B'),   [T('c'); T('c'); NT('D')]);
+    Prod(NT('B'),   [T('d')]);
+    Prod(NT('D'),   [NT('E')]);
+    Prod(NT('F'),   [T('g'); T('a')])
 ];;

@@ -1,3 +1,5 @@
+#use "type.ml";;
+
 let rec contient x l =
     match l with
     | [] -> false
@@ -19,10 +21,10 @@ let list_to_set liste =
 let rec recuperer_non_terminaux_regle production =
     let rec recuperer_non_terminaux_regle_rec production res =
         match production with
-        | Prod(nt, liste) ->    match liste with
-                                | T(_)::tail -> recuperer_non_terminaux_regle_rec (Prod(nt, tail)) res
-                                | NT(x)::tail -> recuperer_non_terminaux_regle_rec (Prod(nt, tail)) (NT(x)::res)
-                                | _ -> nt::res
+        | Prod(nt, liste) -> match liste with
+                             | T(_)::tail -> recuperer_non_terminaux_regle_rec (Prod(nt, tail)) res
+                             | NT(x)::tail -> recuperer_non_terminaux_regle_rec (Prod(nt, tail)) (NT(x)::res)
+                             | _ -> nt::res
     in (list_to_set (recuperer_non_terminaux_regle_rec production []))
     ;;
 
@@ -34,6 +36,7 @@ let rec recuperer_non_terminaux_grammaire grammaire =
                                    (recuperer_non_terminaux_grammaire tail)
                                )
     ;;
+
 
 let retirer_terme terme alphabet =
     let rec retirer_terme_rec terme alphabet res =

@@ -29,21 +29,19 @@ let rec subset sub set =
     ;;
 
 
-(* let non_terminaux_productibles grammaire = *)
-    let rec non_terminaux_productibles_rec grammaire regles prec acc =
+let non_terminaux_productifs grammaire =
+    let rec non_terminaux_productifs_rec grammaire regles prec acc =
         match regles with
         | Prod(nt, liste)::suite -> let non_terminaux = non_terminaux_produits (Prod(nt, liste)) in
                 if ((not (List.mem nt acc)) && subset non_terminaux acc)
-                then non_terminaux_productibles_rec grammaire suite prec (nt::acc)
-                else non_terminaux_productibles_rec grammaire suite prec acc
+                then non_terminaux_productifs_rec grammaire suite prec (nt::acc)
+                else non_terminaux_productifs_rec grammaire suite prec acc
         | [] -> let reste = (regles_restantes acc grammaire) in begin
                 match reste with
                 | [] -> acc
                 | reste -> if (subset prec reste)
                            then acc
-                           else non_terminaux_productibles_rec grammaire reste regles acc
+                           else non_terminaux_productifs_rec grammaire reste regles acc
                 end
-    (* in non_terminaux_productibles_rec grammaire grammaire [] [] *)
+    in non_terminaux_productifs_rec grammaire grammaire grammaire []
     ;;
-
-#trace non_terminaux_productibles_rec;;

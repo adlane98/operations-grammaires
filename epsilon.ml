@@ -1,5 +1,7 @@
 #use "productifs.ml";;
 
+(* Fichier de la premiere methode *)
+
 (*
  * Renvoie true si la grammaire 'gram' contient uniquement des
  * regles de la forme A -> epsilon et/ou A -> A..A (uniquement des A à droite)
@@ -105,16 +107,16 @@ let rec epsilon_iteration (terme, eps_seul) gram =
         @
         (epsilon_iteration (terme, eps_seul) tail)
     | head::tail -> head::(epsilon_iteration (terme, eps_seul) tail)
-    ;;
+;;
 
 
 (*
  * Retire toutes les epsilon-regles de la grammaire 'gram'
  *)
-let supprimer_epsilon_regle gram =
-    let rec supprimer_epsilon_regle_rec ntpe gram =
+let supprimer_toutes_epsilon_regles gram =
+    let rec supprimer_toutes_epsilon_regles_rec ntpe gram =
         match ntpe with
         | [] -> gram
-        | head::tail -> supprimer_epsilon_regle_rec tail (epsilon_iteration head gram)
-    in list_to_set (retirer_production_vide (supprimer_epsilon_regle_rec (non_terminaux_produisent_epsilon gram) gram))
-    ;;
+        | head::tail -> supprimer_toutes_epsilon_regles_rec tail (epsilon_iteration head gram)
+    in list_to_set (retirer_production_vide (supprimer_toutes_epsilon_regles_rec (non_terminaux_produisent_epsilon gram) gram))
+;;

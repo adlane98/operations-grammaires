@@ -1,7 +1,4 @@
-#use "accessibles.ml";;
-#use "productifs.ml";;
 #use "epsilon.ml";;
-
 
 let grammaireTest = [
     Prod(NT('A'),   [NT('B'); T('c')]);

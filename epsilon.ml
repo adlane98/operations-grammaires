@@ -1,5 +1,4 @@
-#use "type.ml";;
-#use "utils.ml";;
+#use "productifs.ml";;
 
 (*
  * Renvoie true si la grammaire 'gram' contient uniquement des

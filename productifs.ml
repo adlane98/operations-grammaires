@@ -37,3 +37,18 @@ let non_terminaux_productifs grammaire =
                 end
     in non_terminaux_productifs_rec grammaire grammaire grammaire []
     ;;
+
+
+(*
+ * Recupere toutes les regles productives d'une grammaire
+ * @param une grammaire
+ * @return une grammaire ne contenant que des règles productives
+ *)
+let rec regles_productives grammaire =
+    match grammaire with
+    | [] -> []
+    | Prod(nt, liste)::suite -> let non_terminaux = non_terminaux_productifs grammaire in
+                                    if (subset (nt::(recuperer_non_terminaux_regle (Prod(nt, liste)))) non_terminaux)
+                                    then (Prod(nt, liste))::(regles_productives suite)
+                                    else regles_productives suite
+    ;;
